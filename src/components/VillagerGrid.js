@@ -1,10 +1,13 @@
 import React from 'react';
+import VillagerItem from './VillagerItem';
 
-const VillagerGrid = ({ villagers }) => {
-  return (
+const VillagerGrid = ({ villagers, isLoading }) => {
+  return isLoading ? (
+    <h1>Loading...</h1>
+  ) : (
     <div>
-      {Object.entries(villagers).map(villager => (
-        <p>{villager[1]['name']['name-USen']}</p>
+      {villagers.map(villager => (
+        <VillagerItem key={villager[1].id} villager={villager}></VillagerItem>
       ))}
     </div>
   );
