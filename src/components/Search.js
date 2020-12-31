@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 
-const Search = () => {
-  const [query, setQuery] = useState('');
+const Search = ({ getQuery }) => {
+  const [text, setText] = useState('');
+  const onChange = q => {
+    setText(q);
+    getQuery(q);
+  };
 
   return (
     <form>
       <input
         type='text'
         placeholder='Audie...'
-        value={query}
-        onChange={e => setQuery(e.target.value)}
+        value={text}
+        onChange={e => onChange(e.target.value)}
       />
     </form>
   );

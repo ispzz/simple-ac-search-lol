@@ -8,18 +8,25 @@ import VillagerGrid from './components/VillagerGrid';
 const App = () => {
   const [villagers, setVillagers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [query, setQuery] = useState('');
 
   // Get all AC characters
   useEffect(() => {
     const fetchVillagers = async () => {
       const result = await axios(`http://acnhapi.com/v1/villagers`);
 
-      const test = Object.entries(result.data).filter(villager =>
-        villager[1]['name']['name-USen'].includes('Au')
+      let test = Object.entries(result.data).filter(villager =>
+        villager[1]['name']['name-USen']
+          .toLowerCase()
+          .includes(query.toLowerCase())
       );
       // console.log(
       //   test.map(filteredVillager => filteredVillager[1]['name']['name-USen'])
       // );
+
+      if (test.length > 20) {
+        test = test.splice(0, 20);
+      }
 
       console.log(test.map(filteredVillager => filteredVillager));
 
@@ -27,7 +34,7 @@ const App = () => {
       setIsLoading(false);
     };
     fetchVillagers();
-  }, []);
+  }, [query]);
 
   // console.log(villagers);
   // Object.entries(villagers).map(item => {
@@ -50,7 +57,7 @@ const App = () => {
 
   return (
     <div className='container'>
-      <Search />
+      <Search getQuery={q => setQuery(q)} />
       <VillagerGrid isLoading={isLoading} villagers={villagers} />
     </div>
   );
